@@ -6,15 +6,9 @@
   "scripts": {
     "build": "git archive -o prattle.zip HEAD",
     "deploy": "aws s3 cp prattle.zip s3://mho-alexa-skills/",
-    "ship": "npm run build && npm run deploy && exit 0"
+    "ship": "npm run build && npm run deploy"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {},
-  "devDependencies": {
-    "post-commit": "0.0.1"
-  },
-  "post-commit": [
-    "ship"
-  ]
+  "dependencies": {}
 }
