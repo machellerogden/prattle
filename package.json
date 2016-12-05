@@ -11,6 +11,7 @@
   "dependencies": {},
   "scripts": {
       "build": "git archive -o prattle.zip HEAD",
-      "deploy": "aws s3 cp prattle.zip s3://mho-alexa-skills/"
+      "deploy": "aws s3 cp prattle.zip s3://mho-alexa-skills/",
+      "ship": "npm run build && npm run deploy"
   }
 }
