@@ -4,14 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "git archive -o prattle.zip HEAD",
+    "deploy": "aws s3 cp prattle.zip s3://mho-alexa-skills/",
+    "ship": "npm run build && npm run deploy && exit 0"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {},
-  "scripts": {
-      "build": "git archive -o prattle.zip HEAD",
-      "deploy": "aws s3 cp prattle.zip s3://mho-alexa-skills/",
-      "ship": "npm run build && npm run deploy"
-  }
+  "devDependencies": {
+    "post-commit": "0.0.1"
+  },
+  "post-commit": [
+    "ship"
+  ]
 }
