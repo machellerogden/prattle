@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {},
   "scripts": {
-      "build": "git archive -o prattle.zip HEAD"
+      "build": "git archive -o prattle.zip HEAD",
+      "deploy": "aws s3 cp prattle.zip s3://mho-alexa-skills/"
   }
 }
