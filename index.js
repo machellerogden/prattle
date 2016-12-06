@@ -33,7 +33,11 @@ exports.handler = (event, context, callback) => {
 
             console.log(`IntentRequest requestId=${event.request.requestId}, sessionId=${event.session.sessionId} intentName=${intentName} intent[intentName]=${intent[intentName]}`);
 
-            intent[intentName](event.request.intent, session, buildResponseCallback);
+            try {
+                intent[intentName](event.request.intent, event.session, buildResponseCallback);
+            } catch (e) {
+                throw new Error('Invalid intent');
+            }
 
         } else if (event.request.type === 'SessionEndedRequest') {
             onSessionEnded(event.request, event.session);
