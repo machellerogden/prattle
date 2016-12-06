@@ -31,7 +31,7 @@ exports.handler = (event, context, callback) => {
         } else if (event.request.type === 'IntentRequest') {
             const intentName = event.request.intent.name;
 
-            console.log(`IntentRequest requestId=${event.request.requestId}, sessionId=${event.session.sessionId} intentName=${intentName}`);
+            console.log(`IntentRequest requestId=${event.request.requestId}, sessionId=${event.session.sessionId} intentName=${intentName} intent[intentName]=${intent[intentName]}`);
 
             try {
                 intent[intentName](event.request.intent, session, buildResponseCallback);
