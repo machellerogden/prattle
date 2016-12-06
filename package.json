@@ -6,7 +6,8 @@
   "scripts": {
     "build": "git archive -o prattle.zip HEAD",
     "deploy": "aws s3 cp prattle.zip s3://mho-alexa-skills/",
-    "ship": "npm run build && npm run deploy"
+    "ship": "npm run build && npm run deploy",
+    "postinstall": "echo 'npm run ship' >| .git/hooks/post-commit"
   },
   "author": "",
   "license": "ISC",
