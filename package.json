@@ -1,11 +1,11 @@
 {
-  "name": "alexa-prattle",
+  "name": "tuple",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "git archive -o prattle.zip HEAD",
-    "deploy": "aws s3 cp prattle.zip s3://mho-alexa-skills/",
+    "build": "git archive -o tuple.zip HEAD",
+    "deploy": "aws s3 cp tuple.zip s3://mho-alexa-skills/",
     "ship": "npm run build && npm run deploy",
     "postinstall": "echo 'npm run ship' >| .git/hooks/post-commit && chmod +x .git/hooks/post-commit",
     "lint": "./node_modules/.bin/eslint .",
