@@ -1,4 +1,5 @@
 'use strict';
+
 const buildResponse = require('./lib/buildResponse');
 const buildSpeechletResponse = require('./lib/buildSpeechletResponse');
 const onSessionStarted = require('./lib/onSessionStarted');
