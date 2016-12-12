@@ -9,7 +9,7 @@
     "ship": "npm run build && npm run deploy",
     "postinstall": "echo 'npm run ship' >| .git/hooks/post-commit && chmod +x .git/hooks/post-commit",
     "lint": "./node_modules/.bin/eslint .",
-    "test": "./node_modules/.bin/lambda-local -l index.js -h handler -e ./test-events/my-car-is-ford.js"
+    "test": "./node_modules/.bin/lambda-local -l index.js -h handler -e ./test-events/*.js"
   },
   "author": "",
   "license": "ISC",
