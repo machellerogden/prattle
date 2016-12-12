@@ -11,7 +11,11 @@ exports.handler = handler;
 function handler(event, context, callback) {
 
     function buildResponseCallback(options) {
-        const { sessionAttributes, cardTitle, speechOutput, repromptText, shouldEndSession } = options;
+        const sessionAttributes = options.sessionAttributes;
+        const cardTitle = options.cardTitle;
+        const speechOutput = options.speechOutput;
+        const repromptText = options.repromptText;
+        const shouldEndSession = options.shouldEndSession;
         const speechletResponse = buildSpeechletResponse({ cardTitle, speechOutput, repromptText, shouldEndSession });
         console.log(`buildResponseCallback sessionAttributes=${sessionAttributes} speechletResponse=${speechletResponse}`);
         callback(null, buildResponse({ sessionAttributes, speechletResponse }));
@@ -34,12 +38,14 @@ function handler(event, context, callback) {
             getWelcomeResponse(buildResponseCallback);
 
         } else if (event.request.type === 'IntentRequest') {
-            const intentName = event.request.intent.name;
+            const intent = event.request.intent;
+            const session = event.session;
+            const intentName = intent.name;
 
             console.log(`IntentRequest requestId=${event.request.requestId}, sessionId=${event.session.sessionId} intentName=${intentName} intentMap[intentName]=${intentMap[intentName]}`);
 
             try {
-                intentMap[intentName](event.request.intent, event.session, buildResponseCallback);
+                intentMap[intentName]({ intent, session }, buildResponseCallback);
             } catch (err) {
                 throw new Error('Invalid intent');
             }
