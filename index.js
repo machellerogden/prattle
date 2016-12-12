@@ -1,15 +1,18 @@
 'use strict';
 const buildResponse = require('./lib/buildResponse');
+const buildSpeechletResponse = require('./lib/buildSpeechletResponse');
 const onSessionStarted = require('./lib/onSessionStarted');
 const onSessionEnded = require('./lib/onSessionEnded');
-const intent = require('./lib/intent');
+const intentMap = require('./lib/intent');
 const getWelcomeResponse = require('./lib/getWelcomeResponse');
 
 exports.handler = (event, context, callback) => {
 
-    const buildResponseCallback = (sessionAttributes, speechletResponse) => {
+    const buildResponseCallback = (options) => {
+        const { sessionAttributes, cardTitle, speechOutput, repromptText, shouldEndSession } = options;
+        const speechletResponse = buildSpeechletResponse({ cardTitle, speechOutput, repromptText, shouldEndSession });
         console.log(`buildResponseCallback sessionAttributes=${sessionAttributes} speechletResponse=${speechletResponse}`);
-        callback(null, buildResponse(sessionAttributes, speechletResponse));
+        callback(null, buildResponse({ sessionAttributes, speechletResponse }));
     }
 
     try {
@@ -31,10 +34,10 @@ exports.handler = (event, context, callback) => {
         } else if (event.request.type === 'IntentRequest') {
             const intentName = event.request.intent.name;
 
-            console.log(`IntentRequest requestId=${event.request.requestId}, sessionId=${event.session.sessionId} intentName=${intentName} intent[intentName]=${intent[intentName]}`);
+            console.log(`IntentRequest requestId=${event.request.requestId}, sessionId=${event.session.sessionId} intentName=${intentName} intentMap[intentName]=${intentMap[intentName]}`);
 
             try {
-                intent[intentName](event.request.intent, event.session, buildResponseCallback);
+                intentMap[intentName](event.request.intent, event.session, buildResponseCallback);
             } catch (e) {
                 throw new Error('Invalid intent');
             }
