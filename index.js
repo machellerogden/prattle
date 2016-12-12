@@ -6,9 +6,11 @@ const onSessionEnded = require('./lib/onSessionEnded');
 const intentMap = require('./lib/intent');
 const getWelcomeResponse = require('./lib/getWelcomeResponse');
 
-exports.handler = (event, context, callback) => {
+exports.handler = handler;
 
-    const buildResponseCallback = (options) => {
+function handler(event, context, callback) {
+
+    function buildResponseCallback(options) {
         const { sessionAttributes, cardTitle, speechOutput, repromptText, shouldEndSession } = options;
         const speechletResponse = buildSpeechletResponse({ cardTitle, speechOutput, repromptText, shouldEndSession });
         console.log(`buildResponseCallback sessionAttributes=${sessionAttributes} speechletResponse=${speechletResponse}`);
@@ -19,7 +21,7 @@ exports.handler = (event, context, callback) => {
         console.log(`event.session.application.applicationId=${event.session.application.applicationId}`);
 
         if (event.session.application.applicationId !== 'amzn1.ask.skill.b0598249-62b9-4853-ab9f-f822568647f8') {
-             callback('Invalid Application ID');
+            return callback('Invalid Application ID');
         }
 
         if (event.session.new) {
@@ -38,16 +40,17 @@ exports.handler = (event, context, callback) => {
 
             try {
                 intentMap[intentName](event.request.intent, event.session, buildResponseCallback);
-            } catch (e) {
+            } catch (err) {
                 throw new Error('Invalid intent');
             }
 
         } else if (event.request.type === 'SessionEndedRequest') {
             onSessionEnded(event.request, event.session);
-            callback();
+            return callback();
         }
     } catch (err) {
-        callback(err);
+        return callback(err);
     }
 
-};
+    return null;
+}
